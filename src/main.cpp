@@ -10,7 +10,8 @@
 
 std::array<Philosopher *, 5> philosophers;
 
-void initPhilosophers(std::mutex & mtx, std::array<Fork, 5> & forks) {
+// Инициализируем философов
+void initPhilosophers(int appetite, std::mutex & mtx, std::array<Fork, 5> & forks) {
     std::array<std::string, 5> names = {
         "Платон",
         "Сократ",
@@ -27,11 +28,13 @@ void initPhilosophers(std::mutex & mtx, std::array<Fork, 5> & forks) {
         "\033[00m", // white
     };
     for (int i = 0; i < names.size(); i++) {
-            int rc = (i + 1) % names.size();
-            philosophers[i] = new Philosopher(colors[i] + names[i] + colors.back(), 5, forks[i], forks[rc], mtx);
-        }
+        // индекс соседней вилки
+        int rc = (i + 1) % names.size();
+        philosophers[i] = new Philosopher(colors[i] + names[i] + colors.back(), appetite, forks[i], forks[rc], mtx);
+    }
 }
 
+// Останавливает всех философов при выходе
 void quit(int s) {
     for (Philosopher *p : philosophers)
         p->stop();
@@ -46,7 +49,7 @@ int main() {
     std::array<Fork, 5> forks;
     std::cout << "Обед подан! (нажмите Ctl+C, чтобы закончить)" << std::endl;
     std::cout << std::endl << "Философы: " << std::endl;
-    initPhilosophers(outLock, forks);
+    initPhilosophers(100, outLock, forks);
     std::cout << std::endl << std::endl;
     // Функция которая вызовется при Ctr+C
     signal(SIGINT, quit);

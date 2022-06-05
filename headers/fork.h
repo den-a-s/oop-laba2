@@ -5,6 +5,7 @@
 class Fork
 {
 public:
+    // мьютекс вилки
     mutable std::mutex mtx;
 
     Fork() = default;

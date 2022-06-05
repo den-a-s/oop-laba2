@@ -15,22 +15,35 @@ class Philosopher
 {
 public:
     Philosopher(
-        const std::string &name, 
-        int appetite, 
-        Fork& leftFork, 
-        Fork& rightFork, 
-        std::mutex& gLock);
+            const std::string &name,
+            int appetite,
+            Fork& leftFork,
+            Fork& rightFork,
+            std::mutex& gLock);
     ~Philosopher();
 
+    // остановка трапезы
     void stop();
+
+    // цикл в котором филосов делает свои основные дела, думает и ест)
     void run();
+
+    // вход в поток
     void join();
 private:
 
+    // Распечатка действий философа
     void printAction(const std::string &msg);
-    void ponder(int min_sec, int max_sec);
-    void eat();
+
+    // Филосов думает
     void think();
+
+    // функция которая заставляет думать философа рандовное время
+    void ponder(int min_sec, int max_sec);
+
+    // Филосов ест
+    void eat();
+
 
     std::string m_name;
     int m_appetite;
